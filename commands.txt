@@ -18,6 +18,19 @@ kubectl get svc
 
 kubectl expose deployment frontend --type=LoadBalancer --name=publicfrontend
 kubectl expose deployment reverseproxy --type=LoadBalancer --name=publicreverseproxy
+kubectl expose deployment api-user --type=LoadBalancer --name=publicapi-user
+kubectl expose deployment api-feed --type=LoadBalancer --name=publicapi-feed
 
 publicfrontend       LoadBalancer   10.100.61.77     a0710ee0d0d394cf8a29854d600663f1-1821878926.us-east-1.elb.amazonaws.com   80:31288/TCP     38s
 publicreverseproxy   LoadBalancer   10.100.197.48    acaff37ab8150471a860ee25bdd6423c-1695559870.us-east-1.elb.amazonaws.com   8080:30294/TCP   31s
+publicapi-feed       LoadBalancer   10.100.206.80    a584f90d337c8465da2761e0566edf56-2107694558.us-east-1.elb.amazonaws.com   8080:32319/TCP   34s
+publicapi-user       LoadBalancer   10.100.173.211   a91d42c9dbbab4a1281938a599d92b3a-177659962.us-east-1.elb.amazonaws.com    8080:30890/TCP   44s
+
+
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.4.5/components.yaml
+
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+kubectl get deployments metrics-server -n kube-system
+kubectl autoscale deployment frontend --cpu-percent=10 --min=3 --max=5
+kubectl autoscale deployment api-user --cpu-percent=10 --min=3 --max=5
