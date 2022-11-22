@@ -1,0 +1,23 @@
+kubectl apply -f ./deploy_service_secret_files/aws-secret.yaml 
+kubectl apply -f ./deploy_service_secret_files/env-secret.yaml 
+kubectl apply -f ./deploy_service_secret_files/env-configmap.yaml 
+
+kubectl apply -f ./deploy_service_secret_files/api-feed-deployment.yaml
+kubectl apply -f ./deploy_service_secret_files/api-user-deployment.yaml
+kubectl apply -f ./deploy_service_secret_files/frontend-deployment.yaml
+kubectl apply -f ./deploy_service_secret_files/reverseproxy-deployment.yaml
+
+kubectl apply -f ./deploy_service_secret_files/api-feed-service.yaml
+kubectl apply -f ./deploy_service_secret_files/api-user-service.yaml
+kubectl apply -f ./deploy_service_secret_files/frontend-service.yaml
+kubectl apply -f ./deploy_service_secret_files/reverseproxy-service.yaml
+
+kubectl get deployments
+
+kubectl get svc
+
+kubectl expose deployment frontend --type=LoadBalancer --name=publicfrontend
+kubectl expose deployment reverseproxy --type=LoadBalancer --name=publicreverseproxy
+
+publicfrontend       LoadBalancer   10.100.61.77     a0710ee0d0d394cf8a29854d600663f1-1821878926.us-east-1.elb.amazonaws.com   80:31288/TCP     38s
+publicreverseproxy   LoadBalancer   10.100.197.48    acaff37ab8150471a860ee25bdd6423c-1695559870.us-east-1.elb.amazonaws.com   8080:30294/TCP   31s
