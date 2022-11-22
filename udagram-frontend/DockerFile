@@ -6,7 +6,6 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm ci
 #bundle app source
-
 COPY . .
 RUN ionic build
 ## Run
