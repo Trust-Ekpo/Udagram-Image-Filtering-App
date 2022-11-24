@@ -1,5 +1,5 @@
 aws eks create-cluster --region us-east-1 --name MyEKSCluster --kubernetes-version 1.23 \
-   --role-arn arn:aws:iam::673930607932:role/EKSClusterRole \
+   --role-arn arn:aws:iam::yourid:role/EKSClusterRole \
    --resources-vpc-config subnetIds=subnet-03fd249948d538a1f,subnet-0c27e71a9c8e57469,subnet-09206c0c11d8dffd4,subnet-077df17b356f12d26,subnet-09403b240b4dc8524,securityGroupIds=sg-022ae42e5f2eaff16
 
 aws eks describe-cluster \
