@@ -1,3 +1,18 @@
+aws eks create-cluster --region us-east-1 --name MyEKSCluster --kubernetes-version 1.23 \
+   --role-arn arn:aws:iam::673930607932:role/EKSClusterRole \
+   --resources-vpc-config subnetIds=subnet-03fd249948d538a1f,subnet-0c27e71a9c8e57469,subnet-09206c0c11d8dffd4,subnet-077df17b356f12d26,subnet-09403b240b4dc8524,securityGroupIds=sg-022ae42e5f2eaff16
+
+aws eks describe-cluster \
+    --region us-east-1 \
+    --name MyEKSCluster\
+    --query "cluster.status"
+
+aws eks update-kubeconfig --region us-east-1 --name MyEKSCluster
+
+aws configure
+
+#WWH
+
 kubectl apply -f ./deploy_service_secret_files/aws-secret.yaml 
 kubectl apply -f ./deploy_service_secret_files/env-secret.yaml 
 kubectl apply -f ./deploy_service_secret_files/env-configmap.yaml 
@@ -18,14 +33,14 @@ kubectl get svc
 
 kubectl expose deployment frontend --type=LoadBalancer --name=publicfrontend
 kubectl expose deployment reverseproxy --type=LoadBalancer --name=publicreverseproxy
+
 kubectl expose deployment api-user --type=LoadBalancer --name=publicapi-user
 kubectl expose deployment api-feed --type=LoadBalancer --name=publicapi-feed
 
-publicfrontend       LoadBalancer   10.100.61.77     a0710ee0d0d394cf8a29854d600663f1-1821878926.us-east-1.elb.amazonaws.com   80:31288/TCP     38s
-publicreverseproxy   LoadBalancer   10.100.197.48    acaff37ab8150471a860ee25bdd6423c-1695559870.us-east-1.elb.amazonaws.com   8080:30294/TCP   31s
-publicapi-feed       LoadBalancer   10.100.206.80    a584f90d337c8465da2761e0566edf56-2107694558.us-east-1.elb.amazonaws.com   8080:32319/TCP   34s
-publicapi-user       LoadBalancer   10.100.173.211   a91d42c9dbbab4a1281938a599d92b3a-177659962.us-east-1.elb.amazonaws.com    8080:30890/TCP   44s
-
+publicapi-feed       LoadBalancer   10.100.158.28    a62b98a7cde2741e2ab00fec6dfef103-1891483981.us-east-1.elb.amazonaws.com   8080:30867/TCP   91s
+publicapi-user       LoadBalancer   10.100.15.55     a5b66e7d18d7442c992a0d496abc2d2f-350956355.us-east-1.elb.amazonaws.com    8080:31284/TCP   98s
+publicfrontend       LoadBalancer   10.100.26.62     a518ef52cdea14930b544d59de45cd97-312458103.us-east-1.elb.amazonaws.com    80:32494/TCP     8m35s
+publicreverseproxy   LoadBalancer   10.100.208.180   a3c4e025271cd4d3b9985abe33e613c8-946049703.us-east-1.elb.amazonaws.com    8080:32531/TCP   57m
 
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.4.5/components.yaml
 
@@ -34,3 +49,12 @@ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/late
 kubectl get deployments metrics-server -n kube-system
 kubectl autoscale deployment frontend --cpu-percent=10 --min=3 --max=5
 kubectl autoscale deployment api-user --cpu-percent=10 --min=3 --max=5
+
+
+
+
+api-feed-6cfd47f8c5-mmjjs       1/1     Running   0               5m56s
+api-user-66c78cb796-ng6kq       1/1     Running   0               5m49s
+frontend-669f57bf4d-7xzzq       1/1     Running   0               5m42s
+frontend-669f57bf4d-lbdh7       1/1     Running   0               5m42s
+reverseproxy-5946bcc786-tp9qf
